@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row">
+
+    <aside class="col-md-4 col-lg-3 col-sm-12" id="home-aside">
+      <div class="card user-card">
+        <div>
+          <div class="image-wrapper">
+            <img src="{{ g.user.header_image_url }}" alt="" class="card-hero">
+          </div>
+          <a href="/users/{{ g.user.id }}" class="card-link">
+            <img src="{{ g.user.image_url }}"
+                 alt="Image for {{ g.user.username }}"
+                 class="card-image">
+            <p>@{{ g.user.username }}</p>
+          </a>
+          <ul class="user-stats nav nav-pills">
+            <li class="stat">
+              <p class="small">Messages</p>
+              <h4>
+                <a href="/users/{{ g.user.id }}">{{ g.user.messages | length }}</a>
+              </h4>
+            </li>
+            <li class="stat">
+              <p class="small">Following</p>
+              <h4>
+                <a href="/users/{{ g.user.id }}/following">{{ g.user.following | length }}</a>
+              </h4>
+            </li>
+            <li class="stat">
+              <p class="small">Followers</p>
+              <h4>
+                <a href="/users/{{ g.user.id }}/followers">{{ g.user.followers | length }}</a>
+              </h4>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <div class="col-lg-6 col-md-8 col-sm-12">
+      <ul class="list-group" id="messages">
+        {% for msg in messages %}
+          <li class="list-group-item">
+            <!-- Separate like button from message area -->
+            <div class="like-area">
+              <form method="POST" action="/users/add_like/{{ msg.id }}" class="d-inline">
+                <button type="submit" class="btn btn-link">
+                  {% if msg in g.user.likes %}
+                    <i class="bi bi-star-fill" aria-label="Unlike"></i>
+                  {% else %}
+                    <i class="bi bi-star" aria-label="Like"></i>
+                  {% endif %}
+                </button>
+              </form>
+            </div>
+            
+            <!-- Message area -->
+            <div class="message-link-area">
+              <a href="/messages/{{ msg.id }}">
+                <div class="message-content">
+                  <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
+                  <div class="message-area">
+                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <p>{{ msg.text }}</p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}
+
