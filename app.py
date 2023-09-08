@@ -11,15 +11,12 @@ CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
 
-# Get DB_URI from environ variable (useful for production/testing) or,
-# if not set there, use development local db.
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///warbler'))
+# Determine the Flask environment and load the appropriate configuration
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = False
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "it's a secret")
+if os.environ.get('FLASK_ENV') == 'testing':
+    app.config.from_object('config.test_config.TestConfig')
+elif os.environ.get('FLASK_ENV') == 'development':
+    app.config.from_object('config.dev_config.DevConfig')
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
