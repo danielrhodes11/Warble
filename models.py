@@ -44,8 +44,7 @@ class Likes(db.Model):
 
     message_id = db.Column(
         db.Integer,
-        db.ForeignKey('messages.id', ondelete='cascade'),
-        unique=True
+        db.ForeignKey('messages.id', ondelete='cascade')
     )
 
     message = db.relationship('Message', back_populates="likes_from_users")
@@ -205,7 +204,6 @@ class Message(db.Model):
     )
 
     user = db.relationship('User')
-    likes = db.relationship('User', secondary="likes")
     likes_from_users = db.relationship('Likes', back_populates="message")
 
 
