@@ -414,10 +414,17 @@ def homepage():
                         .limit(100)
                         .all())
 
-        return render_template('home.html', messages=messages)
+        return render_template('home.html', messages=messages, user=g.user.id)
 
     else:
         return render_template('home-anon.html')
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """404 NOT FOUND page."""
+
+    return render_template('404.html'), 404
 
 
 ##############################################################################
