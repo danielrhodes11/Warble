@@ -139,6 +139,9 @@ def list_users():
 
     Can take a 'q' param in querystring to search by that username.
     """
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
     search = request.args.get('q')
 
@@ -153,6 +156,10 @@ def list_users():
 @app.route('/users/<int:user_id>')
 def users_show(user_id):
     """Show user profile."""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
     user = User.query.get_or_404(user_id)
     hero_image_url = user.header_image_url if is_valid_url(
@@ -340,7 +347,7 @@ def messages_add():
     form = MessageForm()
 
     if form.validate_on_submit():
-        msg = Message(text=form.text.data)
+        msg = Message(text=form.text.data, user_id=g.user.id)
         g.user.messages.append(msg)
         db.session.commit()
 
@@ -352,6 +359,9 @@ def messages_add():
 @app.route('/messages/<int:message_id>', methods=["GET"])
 def messages_show(message_id):
     """Show a message."""
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
     msg = Message.query.get(message_id)
     return render_template('messages/show.html', message=msg)
