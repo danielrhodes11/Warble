@@ -6,6 +6,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <ul class="list-group no-hover" id="messages">
+        
         <li class="list-group-item">
           <a href="{{ url_for('users_show', user_id=message.user.id) }}">
             <img src="{{ message.user.image_url }}" alt="" class="timeline-image">

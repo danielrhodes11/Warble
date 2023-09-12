@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- warble.html (a new HTML template) -->
+<li class="list-group-item">
+    <div class="like-area">
+        <button class="like-button" data-warble-id="{{ msg.id }}">
+            {% if msg in g.user.likes %}
+                <i class="bi bi-star-fill" aria-label="Unlike"></i>
+            {% else %}
+                <i class="bi bi-star" aria-label="Like"></i>
+            {% endif %}
+        </button>
+    </div>
+    
+    <div class="message-link-area">
+        <a href="/messages/{{ msg.id }}">
+            <div class="message-content">
+                <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
+                <div class="message-area">
+                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <p>{{ msg.text }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+</li>
+
+{% endblock %}
+
