@@ -37,39 +37,36 @@
         </div>
       </div>
     </aside>
-
     <div class="col-lg-6 col-md-8 col-sm-12">
       <ul class="list-group" id="messages">
         {% for msg in messages %}
-          <li class="list-group-item">
-            <a href="/messages/{{ msg.id  }}" class="message-link"/>
-            <a href="/users/{{ msg.user.id }}">
-              <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
-            </a>
-            <div class="message-area">
-              <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-              <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-              <p>{{ msg.text }}</p>
-            </div>
-            <!-- Add this form to allow liking/unliking -->
-            <form method="POST" action="/users/add_like/{{ msg.id }}" class="like-form">
-              <button type="submit" class="like-button">
-                {% if msg in g.user.likes %}
-                  Unlike
-                {% else %}
-                  Like
-                {% endif %}
-              </button>
-            </form>
-            
-          
-          </li>
+        <li class="list-group-item">
+          <a href="/messages/{{ msg.id }}" class="message-link"></a>
+          <a href="/users/{{ msg.user.id }}">
+            <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
+          </a>
+          <div class="message-area">
+            <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+            <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+            <p>{{ msg.text }}</p>
+          </div>
+          <!-- Add data attributes to store message ID and like status -->
+          <form method="POST" action="/users/add_like/{{ msg.id }}" class="like-form">
+            <button type="submit" class="btn btn-link like-button" style="color: #e62f2f;">
+              {% if msg in g.user.likes %}
+              <i class="fas fa-heart"></i>
+              {% else %}
+              <i class="far fa-heart"></i>
+              {% endif %}
+            </button>
+            <input type="hidden" name="message_id" value="{{ msg.id }}">
+          </form>
+        </li>
         {% endfor %}
       </ul>
     </div>
-
-
-    {% endblock %}
+  {% endblock %}
+    
 
 
 

@@ -4,27 +4,26 @@
 
 <!-- warble.html (a new HTML template) -->
 <li class="list-group-item">
-    <a href="/messages/{{ msg.id }}" class="message-link"/>
-    <a href="/users/{{ msg.user.id }}">
-        <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
-    </a>
-    <div class="message-area">
-        <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-        <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-        <p>{{ msg.text }}</p>
-    </div>
-    <!-- Add this form to allow liking/unliking via AJAX -->
-    <form method="POST" action="/users/toggle_like/{{ msg.id }}" class="like-form">
-        <button type="submit" class="like-button">
+    <div class="like-area">
+        <button class="like-button" data-warble-id="{{ msg.id }}">
             {% if msg in g.user.likes %}
-                Unlike
+                <i class="bi bi-star-fill" aria-label="Unlike"></i>
             {% else %}
-                Like
+                <i class="bi bi-star" aria-label="Like"></i>
             {% endif %}
         </button>
-    </form>
+    </div>
+    
+    <div class="message-link-area">
+        <a href="/messages/{{ msg.id }}">
+            <div class="message-content">
+                <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
+                <div class="message-area">
+                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <p>{{ msg.text }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
 </li>
-
-
-{% endblock %}
-
