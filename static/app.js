@@ -43,5 +43,5 @@ function displayFlashMessage(message, category) {
 
     setTimeout(() => {
         alertContainer.removeChild(alert);
-    }, 4000);
+    }, 3000);
 }
