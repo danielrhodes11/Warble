@@ -78,6 +78,30 @@ class UserViewTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn('test message', str(resp.data))
 
+    def test_add_message_as_other(self):
+        """Can logged in user add message as other user?"""
+
+        with self.client.session_transaction() as session:
+            session[CURR_USER_KEY] = self.user.id
+
+        user2 = User.signup(username='testuser2',
+                            email='test@user.com',
+                            password='password',
+                            image_url=None,
+                            header_image_url=None,
+                            bio=None,
+                            location=None)
+
+        db.session.add(user2)
+        db.session.commit()
+
+        resp = self.client.post('/messages/new',
+                                data={'text': 'test message',
+                                      'user_id': user2.id},
+                                follow_redirects=True)
+
+        self.assertIn('Access unauthorized.', str(resp.data))
+
     def test_access_followers_page_logged_in(self):
         """Can logged in user access followers page?"""
 
