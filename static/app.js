@@ -1,27 +1,51 @@
-$('.like-button').on('click', function (e) {
-    e.preventDefault();
-    e.stopPropagation(); // Prevent the click event from propagating to the anchor link
+const likeForms = document.querySelectorAll('.like-form');
 
-    const button = $(this);
-    const messageID = button.data('message-id');
-    const isLiked = button.data('liked');
+likeForms.forEach(form => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        });
 
-    // Send an AJAX request to like/unlike the message
-    $.ajax({
-        method: 'POST',
-        url: `/users/add_like/${messageID}`,
-        data: { liked: !isLiked },
-        success: function (response) {
-            // Update the button text and like status
-            if (isLiked) {
-                button.data('liked', false);
-                button.html('<i class="far fa-heart"></i>');
-            } else {
-                button.data('liked', true);
-                button.html('<i class="fas fa-heart"></i>');
+        // Handle the response and update the UI accordingly (toggle like button)
+        if (response.ok) {
+            const likeButton = form.querySelector('.like-button');
+            const liked = likeButton.getAttribute('data-liked') === 'true';
+            const isOwnWarble = likeButton.getAttribute('data-is-own-warble') === 'true';
+
+            // Check if it's not the user's own warble before toggling
+            if (!isOwnWarble) {
+                likeButton.setAttribute('data-liked', liked ? 'false' : 'true');
+                if (liked) {
+                    likeButton.innerHTML = '<i class="far fa-heart"></i>';
+                } else {
+                    likeButton.innerHTML = '<i class="fas fa-heart"></i>';
+                }
+            }
+
+            // If it's the user's own warble, you can display a message here.
+            if (isOwnWarble) {
+                displayFlashMessage("You cannot like your own warbles", "danger");
             }
         }
     });
 });
 
 
+function displayFlashMessage(message, category) {
+
+    const alert = document.createElement('div');
+    alert.className = `alert alert-${category}`;
+    alert.textContent = message;
+
+
+    const alertContainer = document.getElementById('alert-container');
+    alertContainer.appendChild(alert);
+
+    // Automatically remove the alert after a certain time (e.g., 3 seconds).
+    setTimeout(() => {
+        alertContainer.removeChild(alert);
+    }, 4000);
+}

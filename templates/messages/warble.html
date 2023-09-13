@@ -1,29 +1,32 @@
-{% extends 'base.html' %}
-
 {% block content %}
 
-<!-- warble.html (a new HTML template) -->
 <li class="list-group-item">
-    <div class="like-area">
-        <button class="like-button" data-warble-id="{{ msg.id }}">
-            {% if msg in g.user.likes %}
-                <i class="bi bi-star-fill" aria-label="Unlike"></i>
-            {% else %}
-                <i class="bi bi-star" aria-label="Like"></i>
-            {% endif %}
+    <a href="/users/{{ msg.user.id }}">
+      <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
+    </a>
+    <div class="message-area">
+      <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+      <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+      <p>{{ msg.text }}</p>
+      <!-- Add a like button within the message area -->
+      <form method="POST" action="/users/add_like/{{ msg.id }}" class="like-form">
+        <button
+          type="submit"
+          class="btn btn-link like-button"
+          style="color: #e62f2f;"
+          data-message-id="{{ msg.id }}"
+          data-is-own-warble="{% if msg.user == g.user %}true{% else %}false{% endif %}"
+          data-liked="{% if msg in g.user.likes %}true{% else %}false{% endif %}">
+          {% if msg in g.user.likes %}
+          <i class="fas fa-heart"></i>
+          {% else %}
+          <i class="far fa-heart"></i>
+          {% endif %}
         </button>
+        <input type="hidden" name="message_id" value="{{ msg.id }}">
+      </form>
     </div>
-    
-    <div class="message-link-area">
-        <a href="/messages/{{ msg.id }}">
-            <div class="message-content">
-                <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
-                <div class="message-area">
-                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-                    <p>{{ msg.text }}</p>
-                </div>
-            </div>
-        </a>
+    <div class="like-area">
     </div>
 </li>
+{% endblock %}  

@@ -327,7 +327,8 @@ def show_likes(user_id):
 
     user = User.query.get_or_404(user_id)
     likes = Likes.query.filter_by(user_id=user_id).all()
-    return render_template('users/likes.html', user=user, likes=likes)
+    messages = [like.message for like in likes]
+    return render_template('users/likes.html', user=user, likes=likes, messages=messages)
 
 
 ##############################################################################
