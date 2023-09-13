@@ -17,12 +17,7 @@ likeForms.forEach(form => {
 
             // Check if it's not the user's own warble before toggling
             if (!isOwnWarble) {
-                likeButton.setAttribute('data-liked', liked ? 'false' : 'true');
-                if (liked) {
-                    likeButton.innerHTML = '<i class="far fa-heart"></i>';
-                } else {
-                    likeButton.innerHTML = '<i class="fas fa-heart"></i>';
-                }
+                toggleLikeButton(likeButton, liked);
             }
 
             // If it's the user's own warble, you can display a message here.
@@ -33,18 +28,19 @@ likeForms.forEach(form => {
     });
 });
 
+function toggleLikeButton(likeButton, liked) {
+    likeButton.setAttribute('data-liked', liked ? 'false' : 'true');
+    likeButton.innerHTML = liked ? '<i class="far fa-heart"></i>' : '<i class="fas fa-heart"></i>';
+}
 
 function displayFlashMessage(message, category) {
-
     const alert = document.createElement('div');
     alert.className = `alert alert-${category}`;
     alert.textContent = message;
 
-
     const alertContainer = document.getElementById('alert-container');
     alertContainer.appendChild(alert);
 
-    // Automatically remove the alert after a certain time (e.g., 3 seconds).
     setTimeout(() => {
         alertContainer.removeChild(alert);
     }, 4000);
