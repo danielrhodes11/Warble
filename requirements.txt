@@ -14,7 +14,7 @@ dnspython<3.0.0
 email-validator==2.0.0.post2
 executing==1.2.0
 Faker < 20.0.0
-Flask==2.3.3
+Flask<3.0.0
 Flask-Bcrypt==1.0.1
 Flask-DebugToolbar==0.13.1
 Flask-SQLAlchemy==3.0.5
