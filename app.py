@@ -6,19 +6,23 @@ from sqlalchemy.exc import IntegrityError
 
 from forms import UserAddForm, LoginForm, MessageForm
 from models import db, connect_db, User, Message, Likes
-from config.dev_config import DevConfig
 
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
-app.config.from_object(DevConfig)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    'DATABASE_URL', 'postgresql:///warbler')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = False
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+app.config['SECRET_KEY'] = 'secret'
 # Determine the Flask environment and load the appropriate configuration
+
 
 if os.environ.get('FLASK_ENV') == 'testing':
     app.config.from_object('config.test_config.TestConfig')
-elif os.environ.get('FLASK_ENV') == 'development':
-    app.config.from_object('config.dev_config.DevConfig')
+
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
