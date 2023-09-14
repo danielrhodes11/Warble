@@ -19,7 +19,7 @@ Flask-Bcrypt==1.0.1
 Flask-DebugToolbar==0.13.1
 Flask-SQLAlchemy==3.0.5
 Flask-WTF==1.1.1
-gunicorn < 22.0.0
+gunicorn==19.7.1
 idna==3.4
 ipython < 9.0.0
 ipython-genutils==0.2.0
