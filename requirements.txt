@@ -50,3 +50,7 @@ urllib3==2.0.4
 wcwidth==0.2.6
 Werkzeug < 3.0.0
 WTForms==3.0.1
+gunicorn==21.2.0
+```
+
+
