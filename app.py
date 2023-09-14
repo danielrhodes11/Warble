@@ -10,6 +10,7 @@ from models import db, connect_db, User, Message, Likes
 CURR_USER_KEY = "curr_user"
 
 app = Flask(__name__)
+app.config.from_object('config.DevConfig')
 
 # Determine the Flask environment and load the appropriate configuration
 
